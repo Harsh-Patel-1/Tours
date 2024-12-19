@@ -1,6 +1,6 @@
-const AppError = require('../utils/appError');
 const User = require('./../models/userModel');
 const catchAsync = require('./../utils/catchAsync');
+const AppError = require('./../utils/appError');
 
 const filterObj = (obj, ...allowedFields) => {
   const newObj = {};
@@ -10,7 +10,7 @@ const filterObj = (obj, ...allowedFields) => {
   return newObj;
 };
 
-exports.getAllUsers = catchAsync(async (req, res) => {
+exports.getAllUsers = catchAsync(async (req, res, next) => {
   const users = await User.find();
 
   // SEND RESPONSE
@@ -28,7 +28,7 @@ exports.updateMe = catchAsync(async (req, res, next) => {
   if (req.body.password || req.body.passwordConfirm) {
     return next(
       new AppError(
-        'This route is not for password updates. Please use /updateMyPassword',
+        'This route is not for password updates. Please use /updateMyPassword.',
         400,
       ),
     );
@@ -38,7 +38,7 @@ exports.updateMe = catchAsync(async (req, res, next) => {
   const filteredBody = filterObj(req.body, 'name', 'email');
 
   // 3) Update user document
-  const updateUser = await User.findByIdAndUpdate(req.user.id, filteredBody, {
+  const updatedUser = await User.findByIdAndUpdate(req.user.id, filteredBody, {
     new: true,
     runValidators: true,
   });
@@ -46,7 +46,7 @@ exports.updateMe = catchAsync(async (req, res, next) => {
   res.status(200).json({
     status: 'success',
     data: {
-      user: updateUser,
+      user: updatedUser,
     },
   });
 });
