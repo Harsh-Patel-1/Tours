@@ -32,3 +32,6 @@ Before running the application, make sure you have the following installed:
    git clone https://github.com/your-username/tour-management-app.git
    cd tour-management-app
    ```
+2. postman collection
+
+- [postman](https://documenter.getpostman.com/view/32768522/2sAYJ3F2J4)
